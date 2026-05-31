@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI in CRE (CREW) — Working Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#143049;
+    --ink-soft:#2c5475;
+    --paper:#eaf2f7;
+    --paper-warm:#d9e7f0;
+    --line:#2c5475;
+    --accent:#ff7461;
+    --accent-deep:#d85542;
+    --accent-soft:#ffb8a3;
+    --muted:#6b8499;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  body{background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif;font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(to right,rgba(20,48,73,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(20,48,73,.04) 1px,transparent 1px);background-size:48px 48px}
+  main, header, footer{position:relative;z-index:1}
+
+  /* ---------- nav (sticky) ---------- */
+  .nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:20px 48px;border-bottom:1px solid rgba(20,48,73,.15);
+    font-size:13px;letter-spacing:.02em;
+    position:sticky;top:0;z-index:50;
+    background:rgba(234,242,247,.92);backdrop-filter:saturate(140%) blur(10px);
+    -webkit-backdrop-filter:saturate(140%) blur(10px);
+  }
+  .nav .brand{font-family:"JetBrains Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.14em}
+  .nav .brand span{color:var(--accent);font-weight:500}
+  .nav ul{display:flex;gap:28px;list-style:none}
+  .nav a{position:relative;padding:4px 0;transition:color .2s}
+  .nav a:hover{color:var(--accent)}
+  .nav a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--accent);transition:width .3s}
+  .nav a:hover::after{width:100%}
+
+  /* ---------- hero ---------- */
+  .hero{padding:96px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;border-bottom:1px solid rgba(20,48,73,.15)}
+  .hero .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:12px}
+  .hero .eyebrow::before{content:"";width:32px;height:1px;background:var(--accent)}
+  .hero h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(56px,8vw,124px);line-height:.95;letter-spacing:-.02em;color:var(--ink)}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .lede{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:42ch;padding-bottom:8px}
+  .hero .meta{margin-top:24px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:24px;flex-wrap:wrap}
+  .hero .meta span{display:flex;align-items:center;gap:8px}
+  .hero .meta span::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:50%}
+
+  /* ---------- sections ---------- */
+  section{padding:96px 48px;border-bottom:1px solid rgba(20,48,73,.15);scroll-margin-top:80px}
+  .section-head{display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:64px;align-items:start}
+  .section-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);padding-top:8px}
+  .section-head h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(40px,5vw,64px);line-height:1;letter-spacing:-.01em}
+  .section-head .lede-text{font-size:16px;color:var(--ink-soft);max-width:60ch;margin-top:16px}
+
+  /* ---------- about ---------- */
+  .about-body{display:grid;grid-template-columns:200px 1fr 1fr;gap:48px;align-items:start}
+  .about-body .label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .about-body p{font-size:17px;line-height:1.6;color:var(--ink-soft)}
+  .about-body p strong{color:var(--ink);font-weight:600}
+  .about-body p + p{margin-top:20px}
+  .pull{border-left:2px solid var(--accent);padding:8px 0 8px 24px;font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.35;color:var(--ink)}
+
+  /* ---------- cta buttons ---------- */
+  .cta{display:inline-flex;align-items:center;gap:12px;background:var(--accent);color:var(--paper);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:16px 28px;border:1px solid var(--accent);transition:background .25s,color .25s,transform .25s}
+  .cta:hover{background:transparent;color:var(--accent);transform:translateY(-2px)}
+  .cta svg{transition:transform .25s}
+  .cta:hover svg{transform:translateX(5px)}
+  .cta.secondary{background:transparent;color:var(--accent)}
+  .cta.secondary:hover{background:var(--accent);color:var(--paper)}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+  .about-cta{grid-column:2 / -1;margin-top:8px}
+
+  /* ---------- team ---------- */
+  .team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(20,48,73,.15);border:1px solid rgba(20,48,73,.15)}
+  .team-card{background:var(--paper);padding:40px;display:flex;flex-direction:column;gap:16px;transition:background .3s}
+  .team-card:hover{background:var(--paper-warm)}
+  .team-card .role-tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .team-card .name{font-family:"Instrument Serif",serif;font-size:32px;line-height:1.1;letter-spacing:-.01em}
+  .team-card .title{font-size:14px;color:var(--ink-soft);line-height:1.4}
+  .team-card .company{font-weight:500;color:var(--ink)}
+  .team-card .contact{margin-top:auto;padding-top:16px;font-family:"JetBrains Mono",monospace;font-size:12px}
+  .team-card .contact a{border-bottom:1px solid rgba(20,48,73,.3);padding-bottom:1px;transition:color .2s,border-color .2s}
+  .team-card .contact a:hover{color:var(--accent);border-color:var(--accent)}
+
+  .working-group{margin-top:48px}
+  .working-group .wg-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .working-group .wg-note{font-size:14px;color:var(--ink-soft);font-style:italic;margin-bottom:24px}
+  .wg-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(20,48,73,.15);border:1px solid rgba(20,48,73,.15)}
+  .wg-list li{background:var(--paper);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:background .2s}
+  .wg-list li:hover{background:var(--paper-warm)}
+  .wg-list .wg-name{font-family:"Instrument Serif",serif;font-size:22px}
+  .wg-list .wg-role{font-size:13px;color:var(--ink-soft);text-align:right}
+  .join-cta{margin-top:32px;font-size:14px;color:var(--ink-soft);font-style:italic}
+
+  /* ---------- resources ---------- */
+  .resources{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .res-card{background:var(--paper);border:1px solid rgba(20,48,73,.2);padding:32px;display:flex;flex-direction:column;gap:16px;min-height:240px;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+  .res-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+  .res-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,48,73,.08);border-color:var(--ink-soft)}
+  .res-card:hover::before{width:100%}
+  .res-card .res-type{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .res-card h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:28px;line-height:1.15;letter-spacing:-.01em}
+  .res-card p{font-size:14px;color:var(--ink-soft);line-height:1.5}
+  .res-card .arrow{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;display:flex;align-items:center;gap:8px;color:var(--ink)}
+  .res-card .arrow svg{transition:transform .3s}
+  .res-card:hover .arrow svg{transform:translateX(6px)}
+
+  /* ---------- sessions ---------- */
+  .sessions{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .session-card{background:var(--paper);border:1px solid rgba(20,48,73,.2);padding:40px;display:flex;flex-direction:column;gap:20px;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+  .session-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+  .session-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,48,73,.08);border-color:var(--ink-soft)}
+  .session-card:hover::before{width:100%}
+  .session-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:20px;border-bottom:1px solid rgba(20,48,73,.12)}
+  .session-card .session-num{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+  .session-card .session-date{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);text-align:right}
+  .session-card h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:30px;line-height:1.15;letter-spacing:-.01em}
+  .session-card h3 em{font-style:italic;color:var(--accent-deep)}
+  .session-card .tagline{font-size:15px;color:var(--ink-soft);line-height:1.5;font-style:italic}
+  .session-card .description{font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .session-links{margin-top:auto;padding-top:20px;display:flex;gap:24px;flex-wrap:wrap}
+  .session-link{display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid rgba(20,48,73,.3);padding-bottom:2px;transition:color .2s,border-color .2s,gap .25s}
+  .session-link:hover{color:var(--accent);border-color:var(--accent);gap:12px}
+  .session-link svg{transition:transform .25s}
+  .session-link:hover svg{transform:translateX(3px)}
+  .session-card.upcoming{background:transparent;border-style:dashed;justify-content:center;align-items:flex-start}
+  .session-card.upcoming::before{display:none}
+  .session-card.upcoming:hover{transform:none;box-shadow:none;border-color:rgba(20,48,73,.3)}
+  .session-card.upcoming .session-num, .session-card.upcoming h3, .session-card.upcoming .description{color:var(--muted)}
+
+  /* ---------- prompts ---------- */
+  .intro-grid{display:grid;grid-template-columns:200px 1fr 1fr;gap:48px;align-items:start;margin-bottom:64px}
+  .intro-grid .label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .intro-grid p{font-size:17px;line-height:1.6;color:var(--ink-soft)}
+  .intro-grid p strong{color:var(--ink);font-weight:600}
+  .intro-grid p + p{margin-top:20px}
+
+  .categories{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .cat-card{background:var(--paper);border:1px solid rgba(20,48,73,.2);padding:32px;display:flex;flex-direction:column;gap:16px;min-height:220px;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+  .cat-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+  .cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,48,73,.08);border-color:var(--ink-soft)}
+  .cat-card:hover::before{width:100%}
+  .cat-card .cat-num{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .cat-card h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:26px;line-height:1.15;letter-spacing:-.01em}
+  .cat-card p{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .cat-card .arrow{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;display:flex;align-items:center;gap:8px;color:var(--ink)}
+  .cat-card .arrow svg{transition:transform .3s}
+  .cat-card:hover .arrow svg{transform:translateX(6px)}
+
+  .contribute{margin-top:64px;padding:48px;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .contribute h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:40px;line-height:1.05;letter-spacing:-.01em;margin-bottom:12px}
+  .contribute p{font-size:15px;color:rgba(234,242,247,.75);line-height:1.55}
+  .contribute .cta{background:var(--accent-soft);color:var(--ink);border-color:var(--accent-soft)}
+  .contribute .cta:hover{background:transparent;color:var(--accent-soft)}
+  .contribute .cta.secondary{background:transparent;color:var(--accent-soft);border-color:var(--accent-soft)}
+  .contribute .cta.secondary:hover{background:var(--accent-soft);color:var(--ink)}
+
+  /* ---------- tools / questions ---------- */
+  .questions{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:80px}
+  .q-card{background:var(--paper);border:1px solid rgba(20,48,73,.2);padding:32px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s}
+  .q-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+  .q-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,48,73,.08);border-color:var(--ink-soft)}
+  .q-card:hover::before{width:100%}
+  .q-card .q-num{font-family:"Instrument Serif",serif;font-style:italic;font-size:64px;line-height:.9;color:var(--accent);margin-bottom:8px}
+  .q-card h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:24px;line-height:1.2;letter-spacing:-.01em}
+  .q-card p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+
+  /* ---------- platforms ---------- */
+  .platforms-head{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+  .platforms{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .platform-card{background:var(--paper);border:1px solid rgba(20,48,73,.2);padding:36px;display:flex;flex-direction:column;gap:20px;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+  .platform-card::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+  .platform-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(20,48,73,.08);border-color:var(--ink-soft)}
+  .platform-card:hover::before{width:100%}
+  .platform-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:16px;border-bottom:1px solid rgba(20,48,73,.12)}
+  .platform-card h3{font-family:"Instrument Serif",serif;font-weight:400;font-size:32px;line-height:1.1;letter-spacing:-.01em}
+  .platform-card .vendor{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:right}
+  .platform-card .tiers{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--accent)}
+  .platform-body{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .platform-body .col-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .platform-body p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .platform-body .warn .col-label{color:var(--accent-deep)}
+
+  /* ---------- footer ---------- */
+  footer{padding:64px 48px 48px;background:var(--ink);color:var(--paper)}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:48px}
+  .foot-grid h4{font-family:"Instrument Serif",serif;font-weight:400;font-size:32px;margin-bottom:16px;line-height:1.1}
+  .foot-grid p{font-size:14px;color:rgba(234,242,247,.7);line-height:1.5;max-width:48ch}
+  .foot-col h5{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:16px}
+  .foot-col a{display:block;padding:6px 0;font-size:14px;color:rgba(234,242,247,.8);transition:color .2s}
+  .foot-col a:hover{color:var(--paper)}
+  .foot-bottom{border-top:1px solid rgba(234,242,247,.15);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(234,242,247,.5)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .nav{padding:16px 24px;flex-direction:column;gap:12px;align-items:flex-start}
+    .nav ul{gap:18px;flex-wrap:wrap;font-size:12px}
+    .hero{padding:64px 24px 56px;grid-template-columns:1fr;gap:32px}
+    section{padding:64px 24px}
+    .section-head{grid-template-columns:1fr;gap:16px;margin-bottom:40px}
+    .about-body, .intro-grid{grid-template-columns:1fr;gap:24px}
+    .team-grid,.wg-list,.resources,.categories,.questions,.platforms,.sessions{grid-template-columns:1fr}
+    .platform-body{grid-template-columns:1fr;gap:16px}
+    .contribute{grid-template-columns:1fr;gap:24px;padding:32px}
+    footer{padding:48px 24px 32px}
+    .foot-grid{grid-template-columns:1fr;gap:32px}
+    .foot-bottom{flex-direction:column;gap:12px;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="brand"><a href="#top">AI <span>×</span> CRE <span>/</span> CREW</a></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#sessions">Sessions</a></li>
+    <li><a href="#tools">Tools</a></li>
+  </ul>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="eyebrow">A CREW Network Working Group</div>
+      <h1>AI in <em>CRE.</em><br>Built by practitioners.</h1>
+    </div>
+    <div>
+      <p class="lede">A monthly community of practice for CREW members navigating AI adoption in commercial real estate — grounded in real workflows, real concerns, and real results.</p>
+      <div class="meta">
+        <span>Monthly Sessions</span>
+        <span>Practitioner-Led</span>
+        <span>No Sales Pitches</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 ABOUT -->
+  <section id="about">
+    <div class="section-head">
+      <div class="section-num">01 / About</div>
+      <h2>Why this<br>group exists.</h2>
+    </div>
+    <div class="about-body">
+      <div class="label">The Premise</div>
+      <div>
+        <p>The AI in CRE (CREW) working group is a monthly community of practice for CREW members navigating AI adoption in commercial real estate. We meet to share what's working, learn from each other's experience, and ask the harder questions about where this technology is taking our industry and our profession.</p>
+        <p><strong>We are not here to sell tools or declare winners.</strong> We're here to build a practitioner-led knowledge base that's specific to CRE.</p>
+      </div>
+      <div class="pull">"Grounded in real workflows, real concerns, and real results — not vendor pitches or hype cycles."</div>
+      <div class="cta-row about-cta">
+        <a class="cta secondary" href="https://crewbiz.crewnetwork.org/discussion/looking-to-connect-on-ai-in-cre" target="_blank" rel="noopener">
+          How to Join
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+        </a>
+        <a class="cta" href="https://crewbiz.crewnetwork.org/discussion/ai-in-cre-crew-group-updates-session-recaps" target="_blank" rel="noopener">
+          Updates &amp; Session Recaps on CREW Biz
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TEAM -->
+  <section id="team">
+    <div class="section-head">
+      <div class="section-num">02 / The People</div>
+      <h2>Who's running<br>the room.</h2>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <span class="role-tag">Co-Lead</span>
+        <div class="name">Sarah Gudeman</div>
+        <div class="title">VP / Principal<br><span class="company">BranchPattern</span></div>
+        <div class="contact">
+          <a href="mailto:sarah.g@branchpattern.com">Email ↗</a><br>
+          <a href="https://www.linkedin.com/in/sarahgudeman/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+      <div class="team-card">
+        <span class="role-tag">Co-Lead</span>
+        <div class="name">Ivy Marguerite</div>
+        <div class="title">Senior Territory Manager<br><span class="company">EyeQ Monitoring</span></div>
+        <div class="contact">
+          <a href="mailto:imarguerite@eyeqmonitoring.com">Email ↗</a><br>
+          <a href="https://www.linkedin.com/in/ivy-marguerite/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="working-group">
+      <div class="wg-label">— Working Group</div>
+      <div class="wg-note">Meets after each monthly session to confirm and strategize for next month.</div>
+      <ul class="wg-list">
+        <li>
+          <div>
+            <div class="wg-name"><a href="https://www.linkedin.com/in/michellehamiltonai/" target="_blank" rel="noopener">Michelle Hamilton</a></div>
+          </div>
+          <div class="wg-role">AI Adoption Practice Lead<br>AnswerRocket</div>
+        </li>
+        <li>
+          <div>
+            <div class="wg-name"><a href="https://www.linkedin.com/in/melodymontgomery/" target="_blank" rel="noopener">Melody Montgomery</a></div>
+          </div>
+          <div class="wg-role">COO, One More Deal<br>Member Survey Lead</div>
+        </li>
+        <li>
+          <div>
+            <div class="wg-name"><a href="https://www.linkedin.com/in/jodi-tagessen-5650552/" target="_blank" rel="noopener">Jodi L. Tagessen</a></div>
+          </div>
+          <div class="wg-role">Associate Attorney<br><a href="https://www.MMBLawFirm.com">Monroe Moxness Berg PA</a></div>
+        </li>
+      </ul>
+      <p class="join-cta" id="join">Interested in joining the working group? Reach out to Sarah or Ivy directly.</p>
+    </div>
+  </section>
+
+  <!-- 03 RESOURCES NAV -->
+  <section id="resources">
+    <div class="section-head">
+      <div class="section-num">03 / Resources</div>
+      <h2>What you can<br>actually use.</h2>
+    </div>
+    <div class="resources">
+      <a href="#sessions" class="res-card">
+        <span class="res-type">Archive</span>
+        <h3>Session Recaps</h3>
+        <p>Notes, key takeaways, and follow-ups from each monthly session — searchable and dated.</p>
+        <div class="arrow">Jump to <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg></div>
+      </a>
+      <a href="#tools" class="res-card">
+        <span class="res-type">Hub</span>
+        <h3>Tools &amp; Resources</h3>
+        <p>Curated reading, tooling notes, and platform references gathered by the group across sessions.</p>
+        <div class="arrow">Jump to <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg></div>
+      </a>
+      <a href="https://jelly-airmail-5d8.notion.site/AI-in-CREW-100fdda895498384a78801fcc89cf2fe" target="_blank" rel="noopener" class="res-card">
+        <span class="res-type">Page</span>
+        <h3>AI in CREW (Notion)</h3>
+        <p>The expanded reading room — context, framing, and the longer conversations behind the sessions.</p>
+        <div class="arrow">Open <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg></div>
+      </a>
+      <a href="https://jelly-airmail-5d8.notion.site/352fdda8954980c09fd6fd4c11e72cac" target="_blank" rel="noopener" class="res-card">
+        <span class="res-type">Database</span>
+        <h3>Member Survey</h3>
+        <p>Quantitative view of how CREW members are actually adopting AI — tools, concerns, workflows.</p>
+        <div class="arrow">Open <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg></div>
+      </a>
+      <div class="res-card" style="background:transparent;border-style:dashed;cursor:default">
+        <span class="res-type" style="color:var(--muted)">+ Coming</span>
+        <h3 style="color:var(--muted)">More to come</h3>
+        <p>New resources added after each monthly session. Have something to contribute? Send it to a co-lead.</p>
+        <div class="arrow" style="color:var(--muted)">In Progress</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 SESSIONS -->
+  <section id="sessions">
+    <div class="section-head">
+      <div class="section-num">04 / Sessions</div>
+      <div>
+        <h2>What we <em>talked</em><br>about.</h2>
+        <p class="lede-text">Notes, slides, and takeaways from each monthly session. Third Friday of every month · 10–11am EST · Microsoft Teams.</p>
+      </div>
+    </div>
+
+    <div class="sessions">
+
+      <article class="session-card">
+        <div class="session-header">
+          <span class="session-num">Session 01</span>
+          <span class="session-date">Mar 19, 2026</span>
+        </div>
+        <h3>Introductions &amp; <em>Landscape</em></h3>
+        <p class="tagline">Who's in the room, what we're each wrestling with, and where this is heading.</p>
+        <p class="description">The kickoff. We mapped who's adopting AI in their CRE workflows, which tools show up most, and what concerns members bring to the table — from data security to client comms to the hype-vs-reality gap.</p>
+        <div class="session-links">
+          <a class="session-link" href="https://jelly-airmail-5d8.notion.site/352fdda895498010b922c09c2e65ff1c" target="_blank" rel="noopener">
+            Read Recap
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="session-card">
+        <div class="session-header">
+          <span class="session-num">Session 02</span>
+          <span class="session-date">Apr 17, 2026</span>
+        </div>
+        <h3>Foundations of AI for <em>CRE Professionals</em></h3>
+        <p class="tagline">The conceptual grounding — what these models actually do, and don't.</p>
+        <p class="description">Karan walked the group through how large language models work, what they're good at, and where the failure modes show up in CRE workflows specifically. Heavy on examples, light on hype.</p>
+        <div class="session-links">
+          <a class="session-link" href="https://jelly-airmail-5d8.notion.site/352fdda8954980a9ba82ec0bf7404116" target="_blank" rel="noopener">
+            Read Recap
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+          </a>
+          <a class="session-link" href="https://jelly-airmail-5d8.notion.site/352fdda8954980ec805af78a905408ba" target="_blank" rel="noopener">
+            Video &amp; Slides
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="session-card">
+        <div class="session-header">
+          <span class="session-num">Session 03</span>
+          <span class="session-date">May 15, 2026</span>
+        </div>
+        <h3>The AI Advantage in CRE: <em>What Smart Leaders Are Learning</em></h3>
+        <p class="tagline">Leadership patterns — who's actually moving, and what they're doing differently.</p>
+        <p class="description">A look at the firms and individuals quietly building a real edge with AI — what their adoption playbooks look like, where they're focusing first, and the cultural shifts that separate experimentation from operational change.</p>
+        <div class="session-links">
+          <a class="session-link" href="https://jelly-airmail-5d8.notion.site/363fdda8954980c492b9ea7136a5bdef" target="_blank" rel="noopener">
+            Read Recap
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+          </a>
+          <a class="session-link" href="https://jelly-airmail-5d8.notion.site/363fdda89549809e9d08ec35fa8a7d5e" target="_blank" rel="noopener">
+            Video &amp; Slides
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5h12M9 1l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="session-card upcoming">
+        <div class="session-header" style="border-bottom-color:rgba(20,48,73,.08)">
+          <span class="session-num">Session 04</span>
+          <span class="session-date">Jun 19, 2026</span>
+        </div>
+        <h3>Coming up next.</h3>
+        <p class="description">Topic in progress — proposed by the working group, finalized after each monthly session. Want to suggest a topic or offer to present? Email Sarah, Ivy, or any working group member.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 05 TOOLS -->
+  <section id="tools">
+    <div class="section-head">
+      <div class="section-num">05 / Tools &amp; Resources</div>
+      <div>
+        <h2>Pick the right tool.<br><em>Protect</em> the right data.</h2>
+        <p class="lede-text">A working reference for the AI platforms most likely to show up in CRE workflows — with the questions to ask before you commit. This market moves quickly; verify current terms at vendor sites.</p>
+      </div>
+    </div>
+
+    <div class="platforms-head">— Before You Commit · Three Questions</div>
+    <div class="questions">
+      <div class="q-card">
+        <span class="q-num">01</span>
+        <h3>What's in my input?</h3>
+        <p>If your prompt contains confidential client data, deal terms, financial projections, or personal information — you need enterprise-grade data protection. Consumer-tier tools aren't appropriate for this content.</p>
+      </div>
+      <div class="q-card">
+        <span class="q-num">02</span>
+        <h3>What does my firm allow?</h3>
+        <p>Many firms have IT policies that restrict or prohibit certain tools. Find out before using. If there's no policy, that's a conversation to have with IT — not permission to proceed.</p>
+      </div>
+      <div class="q-card">
+        <span class="q-num">03</span>
+        <h3>What's the task?</h3>
+        <p>Match the tool to the job. Research with citations → Perplexity. Long document analysis → Claude. Excel automation → Copilot. Social content → ChatGPT. Don't default to one tool for everything.</p>
+      </div>
+    </div>
+
+    <div class="platforms-head">— Platform Reference</div>
+    <div class="platforms">
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>ChatGPT</h3>
+            <span class="tiers">Free · Plus / Team · Enterprise</span>
+          </div>
+          <span class="vendor">OpenAI</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Drafting, research, ideation, summaries. Plus/Team add image generation, web search, custom GPTs, and data analysis.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Free tier trains on your inputs by default — turn off in settings. Team adds privacy controls. Enterprise required for full data isolation.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>Claude</h3>
+            <span class="tiers">Free · Pro · Teams · Enterprise</span>
+          </div>
+          <span class="vendor">Anthropic</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Long documents, contract review, research synthesis, nuanced writing. Cowork (beta) extends to desktop file workflows.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Free has usage limits. Pro ($20/mo) adds larger context and priority access. Teams/Enterprise don't train on your inputs.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>Microsoft Copilot</h3>
+            <span class="tiers">Embedded across M365</span>
+          </div>
+          <span class="vendor">Microsoft</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Word, Excel, Outlook, Teams, PowerPoint — context-aware AI inside the tools you already use every day.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Quality varies significantly by app. Requires M365 Business or Enterprise license. Not a substitute for standalone chat tools.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>Gemini</h3>
+            <span class="tiers">Workspace integration</span>
+          </div>
+          <span class="vendor">Google</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Docs, Sheets, Gmail, real-time web search, Workspace-native context. Strong on data-heavy tasks in Sheets.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Advanced tier needed for full Workspace integration. Less useful if your firm isn't already on Google Workspace.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>Perplexity</h3>
+            <span class="tiers">Research-focused</span>
+          </div>
+          <span class="vendor">Perplexity AI</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Research with live citations, market data, news aggregation, competitive scans. Strong "where did this fact come from" trail.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Not a writing tool — optimized for retrieval, not drafting. Use it for the facts, take them somewhere else for the prose.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-header">
+          <div>
+            <h3>Proprietary LLMs</h3>
+            <span class="tiers">Firm-built or deployed</span>
+          </div>
+          <span class="vendor">In-house</span>
+        </div>
+        <div class="platform-body">
+          <div>
+            <div class="col-label">Best for in CRE</div>
+            <p>Maximum data security, firm-specific workflows and institutional knowledge. The endgame for firms with mature AI strategy.</p>
+          </div>
+          <div class="warn">
+            <div class="col-label">Watch out for</div>
+            <p>Requires significant technical investment and ongoing maintenance. Not realistic for most smaller CRE firms today.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <h4>An independent working group<br>inside CREW Network.</h4>
+      <p>AI in CRE (CREW) is organized within the CREW Network community. It is not an official CREW Network committee — though we're exploring that. Content shared in sessions and resources reflects member experience and does not constitute professional advice.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Contact</h5>
+      <a href="mailto:sarah.g@branchpattern.com">Sarah Gudeman</a>
+      <a href="mailto:imarguerite@eyeqmonitoring.com">Ivy Marguerite</a>
+    </div>
+    <div class="foot-col">
+      <h5>Navigate</h5>
+      <a href="#about">About</a>
+      <a href="#team">Team</a>
+      <a href="#sessions">Sessions</a>
+      <a href="#tools">Tools</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© AI in CRE (CREW) Working Group</span>
+    <span>Practitioner-Led · Vendor-Neutral · Real Results</span>
+  </div>
+</footer>
+
+</body>
+</html>
